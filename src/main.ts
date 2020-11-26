@@ -5,6 +5,7 @@ import store from './store'
 
 Vue.config.productionTip = false
 
+// 创建Vue根实例，通过render函数将App根组件渲染到#app节点的位置
 new Vue({
   router,
   store,
