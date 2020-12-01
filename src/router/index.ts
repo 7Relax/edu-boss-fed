@@ -8,6 +8,8 @@ const routes: Array<RouteConfig> = [
   {
     path: '/login',
     name: 'login',
+    // 路由懒加载的方式导入组件，打包后会默认会生成：1.js 2.js 这样的模块文件，
+    // 不方便调试查看，可以通过多行注释指定打包后生成的模块名 login
     component: () => import(/* webpackChunkName: 'login' */ '@/views/login/index.vue')
   },
   {
@@ -49,6 +51,11 @@ const routes: Array<RouteConfig> = [
     path: '/advert-space',
     name: 'advert-space',
     component: () => import(/* webpackChunkName: 'advert-space' */ '@/views/advert-space/index.vue')
+  },
+  {
+    path: '*',
+    name: '404',
+    component: () => import(/* webpackChunkName: '404' */ '@/views/error-page/404.vue')
   }
 ]
 
