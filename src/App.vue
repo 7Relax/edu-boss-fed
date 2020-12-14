@@ -1,8 +1,8 @@
 <template>
   <div id="app">
+    <!-- <p class="text">Hello World</p> -->
     <!-- 根路由的出口，
       被匹配到路由组件会被渲染到这个位置 -->
-    <p class="text">Hello World</p>
     <router-view />
   </div>
 </template>
