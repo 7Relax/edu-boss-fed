@@ -69,7 +69,6 @@ export default Vue.extend({
 
         // 2. 验证通过 -> 提交表单 - login方法中的参数必须符合定义好的类型要求
         const { data } = await login(this.form)
-        console.log(data)
 
         // 3. 处理请求结果
         //    失败：给出提示
