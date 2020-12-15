@@ -9,12 +9,15 @@
 
     <el-dropdown>
       <span class="el-dropdown-link">
-        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+        <el-avatar
+          :src="userInfo.portrait || require('@/assets/default-avatar.png')"
+        ></el-avatar>
         <i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item>用户ID</el-dropdown-item>
-        <el-dropdown-item divided>退出</el-dropdown-item>
+        <el-dropdown-item>{{userInfo.userName}}</el-dropdown-item>
+        <!-- .native 直接把事件注册给这个组件的根元素（把事件直接穿透组件进入组件的根元素） -->
+        <el-dropdown-item divided @click.native="handleLogout">退出</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
   </div>
@@ -22,9 +25,40 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { getUserInfo } from '@/services/user'
 
 export default Vue.extend({
-  name: 'AppHeader'
+  name: 'AppHeader',
+  data () {
+    return {
+      userInfo: {} // 当前登录用户的信息
+    }
+  },
+  created () {
+    this.loadUserInfo()
+  },
+  methods: {
+    async loadUserInfo () {
+      const { data } = await getUserInfo()
+      this.userInfo = data.content
+    },
+    handleLogout () {
+      this.$confirm('确认退出吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 清除登录状态
+        this.$store.commit('setUser', null)
+        // 跳转到登录页
+        this.$router.push({
+          name: 'login'
+        })
+      }).catch(() => {
+        console.log('取消退出')
+      })
+    }
+  }
 })
 </script>
 

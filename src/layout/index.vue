@@ -1,10 +1,12 @@
 <template>
   <el-container>
     <el-aside width="200px">
+      <!-- 侧边栏 -->
       <app-aside />
     </el-aside>
     <el-container>
       <el-header>
+        <!-- header -->
         <app-header />
       </el-header>
       <el-main>

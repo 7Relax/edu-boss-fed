@@ -31,8 +31,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import request from '@/utils/request'
-import qs from 'qs'
 import { Form } from 'element-ui'
 import { login } from '@/services/user'
 
@@ -71,22 +69,21 @@ export default Vue.extend({
 
         // 2. 验证通过 -> 提交表单 - login方法中的参数必须符合定义好的类型要求
         const { data } = await login(this.form)
-        // const { data } = await request({
-        //   method: 'POST',
-        //   url: '/front/user/login',
-        //   headers: { 'content-type': 'application/x-www-form-urlencoded' },
-        //   data: qs.stringify(this.form) // axios 默认发送的是 application/json 格式的数据
-        // })
         console.log(data)
+
         // 3. 处理请求结果
         //    失败：给出提示
         if (data.state !== 1) {
           this.$message.error(data.message)
         } else {
+          // 1. 登录成功，记录登录状态，状态需要能够全局访问（放到Vuex容器中）
+          this.$store.commit('setUser', data.content)
+          // 2. 然后在访问需要登录的页面时判断有无登录状态（路由拦截嚣）
           //    成功：跳转到首页
-          this.$router.push({
-            name: 'home'
-          })
+          this.$router.push(this.$route.query.redirect as string || '/')
+          // this.$router.push({
+          //   name: 'home'
+          // })
           this.$message.success('登录成功')
         }
       } catch (error) {
